@@ -1,0 +1,86 @@
+# Prapti Mangade — Portfolio
+
+A premium, animated personal portfolio built with **React 18 + Vite**, **Framer Motion** and **Lucide** icons, with a dark/light theme and a secure, working **contact form** that emails enquiries to `praptimangade@gmail.com` through **Resend**.
+
+## Features
+
+- Black-and-pink design inspired by the Profilee template, plus a full **light theme** (remembered per visitor; follows the system setting on first visit; circular reveal animation on switch)
+- Animations: intro loader, word-reveal hero headline, typing role text, rotating glow ring, floating tech chips, parallax, scroll progress bar, cursor glow, spotlight cards, magnetic buttons, 3D tilt, animated counters, scroll-drawn timeline, filter transitions, modal case studies, animated mobile menu
+- Respects `prefers-reduced-motion`
+- Responsive from 320px phones to wide desktops
+- Sections: Hero · Tech marquee · About + stats · Services · Experience timeline · Skills · **Court AI** case study · Projects (filters + case-study modal) · Contact · Footer
+- Real screenshots of every live project in `public/projects/`
+- Résumé view and download links, Open Graph image, SEO meta tags, JSON-LD, accessible labels, skip link, keyboard-friendly modal
+
+## Run locally
+
+```bash
+npm install
+npm run dev          # http://localhost:5173
+npm run build        # production build → dist/
+npm test             # 15 tests for the contact API
+```
+
+During `npm run dev`, `/api/contact` is served by the same handler used in production. To try the success flow without an email account, create `.env` with `CONTACT_DEV_MOCK=1`.
+
+## Edit your content
+
+Everything lives in `src/data/`:
+
+| File | What it controls |
+|---|---|
+| `profile.js` | Name, intro, roles, email, socials, stats, services, résumé path, **photo** |
+| `experience.js` | Timeline — add your **current company name** and earlier dates here |
+| `skills.js` | Skill groups and the scrolling marquee |
+| `projects.js` | Court AI case study and all project cards |
+
+**Add your photo:** replace `public/profile.png`; `profile.js` uses it in the navigation, page icon, loader and hero.
+
+**Résumé:** update `resume` and `resumeDownload` in `profile.js` when your Google Drive résumé changes. Set Drive sharing to **Anyone with the link — Viewer** so visitors can open and download it.
+
+## Contact form — set up email (Resend)
+
+1. Create a free account at <https://resend.com>.
+2. **Domains → Add domain** and add the DNS records it shows. (A domain you own, such as a cheap `.in`/`.dev`, is needed to send to any inbox. Without one you can test using `onboarding@resend.dev`, which only delivers to the email address your Resend account uses.)
+3. **API Keys → Create API key** (sending access only).
+4. Add these **environment variables** on your host (never in React code, never with a `VITE_` prefix):
+
+| Variable | Example |
+|---|---|
+| `RESEND_API_KEY` | `re_123...` |
+| `CONTACT_TO_EMAIL` | `praptimangade@gmail.com` |
+| `CONTACT_FROM_EMAIL` | `Portfolio <hello@yourdomain.com>` |
+
+5. Redeploy, send a test message from the live site and check your inbox (and spam folder the first time).
+
+Until those variables are set, the form shows an error with a direct email link. It never shows a false "sent" message.
+
+**Built-in protection:** server-side validation, email format and length limits, a hidden honeypot field, a too-fast-submit check, a per-IP rate limit (5 per 10 minutes), header-injection stripping, HTML-escaped email body, the visitor's address set as **Reply-To** (not From), no storage of messages, and no message content or keys in logs.
+
+## Deploy to Netlify
+
+1. Push the portfolio project to its own GitHub repository and import it at <https://app.netlify.com> → **Add new site → Import from Git**. Keep the repository scoped to this project; do not publish your Windows home folder.
+2. Netlify reads `netlify.toml` for the `npm run build` command, `dist` publish directory, Node 20 runtime and `/api/contact` function. If the project is nested in the repository, set the site's base directory to the folder containing `package.json` and `netlify.toml`.
+3. In **Site configuration → Environment variables**, add `RESEND_API_KEY`, `CONTACT_TO_EMAIL` and `CONTACT_FROM_EMAIL` as described above, then trigger a deploy.
+4. After Netlify assigns your site URL, update `siteUrl` in `src/data/profile.js` and the `og:image` URL in `index.html` if you want social link previews to use your live domain.
+
+## Project structure
+
+```
+api/contact.js               Vercel function
+netlify/functions/contact.mjs Netlify function
+server/contact-core.js       Shared validation, anti-spam, Resend call
+src/data/*                   All editable content
+src/components/*             Sections & animation helpers
+src/styles.css               Design tokens (dark + light) and layout
+public/projects/*            Live-site screenshots
+tests/contact.test.js        API tests
+```
+
+## Things to confirm before publishing
+
+- **Current employer**: the .NET role (from Oct 2026) is shown without a company name. Add it in `experience.js` if you want it public.
+- **Earlier dates**: Java, frontend and full-stack phases have no dates. Add them in `experience.js`.
+- **Student Management Portal, MahaStudy, Payroll Management System**: these have no public link yet, so they were left out. Add them to `projects.js` when ready.
+- **Dormitory_Booking** repo is empty on GitHub, so it is not listed.
+- PM Books and Soil Serumz contain some template placeholder text (lorem ipsum reviews). Clean those up before you highlight them to recruiters.
