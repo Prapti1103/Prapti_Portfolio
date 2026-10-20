@@ -4,7 +4,8 @@ A premium, animated personal portfolio built with **React 18 + Vite**, **Framer 
 
 ## Features
 
-- Black-and-pink design inspired by the Profilee template, plus a full **light theme** (remembered per visitor; follows the system setting on first visit; circular reveal animation on switch)
+- Refined dark theme by default, an optional polished light theme, and a circular reveal animation when switching themes
+- Consistent **DM Sans** typography across the portfolio, with JetBrains Mono reserved for subtle technical labels
 - Animations: intro loader, word-reveal hero headline, typing role text, rotating glow ring, floating tech chips, parallax, scroll progress bar, cursor glow, spotlight cards, magnetic buttons, 3D tilt, animated counters, scroll-drawn timeline, filter transitions, modal case studies, animated mobile menu
 - Respects `prefers-reduced-motion`
 - Responsive from 320px phones to wide desktops

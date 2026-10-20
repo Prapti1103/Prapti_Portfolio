@@ -8,17 +8,14 @@ import Contact, { Footer } from './components/Contact';
 import { Loader, Ambient, CursorGlow, ScrollProgress, BackToTop } from './components/Chrome';
 import { useSpotlight } from './components/ui';
 
-const getTheme = () => document.documentElement.getAttribute('data-theme') || 'dark';
-
 export default function App() {
-  const [theme, setTheme] = useState(getTheme);
+  const [theme, setTheme] = useState('dark');
   const [ready, setReady] = useState(false);
   useSpotlight();
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
-    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', theme === 'dark' ? '#0b0709' : '#fbf7f9');
-    try { localStorage.setItem('pm-theme', theme); } catch { /* storage unavailable */ }
+    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', theme === 'dark' ? '#0b0709' : '#f7f5f8');
   }, [theme]);
 
   useEffect(() => {
