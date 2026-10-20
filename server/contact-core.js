@@ -5,9 +5,9 @@
 // Secrets are read ONLY from server-side environment variables:
 //   RESEND_API_KEY      – Resend API key (https://resend.com/api-keys)
 //   CONTACT_TO_EMAIL    – where enquiries are delivered (default praptimangade@gmail.com)
-//   CONTACT_FROM_EMAIL  – verified sender, e.g. "Portfolio <hello@yourdomain.com>"
-//                         (use "Portfolio <onboarding@resend.dev>" only for testing —
-//                          Resend then delivers solely to your own account email)
+//   CONTACT_FROM_EMAIL  – optional verified sender, e.g. "Portfolio <hello@yourdomain.com>"
+//                         defaults to Resend's test sender, which only delivers to
+//                         the email address registered to your Resend account.
 
 export const LIMITS = {
   name: 80,
@@ -150,10 +150,10 @@ export async function handleContact({ method, body, ip = 'unknown', origin = '',
 
   const apiKey = env.RESEND_API_KEY;
   const to = env.CONTACT_TO_EMAIL || 'praptimangade@gmail.com';
-  const from = env.CONTACT_FROM_EMAIL;
+  const from = env.CONTACT_FROM_EMAIL || 'Prapti Mangade <onboarding@resend.dev>';
 
   if (env.CONTACT_DEV_MOCK === '1') return { status: 200, body: { ok: true, mock: true } };
-  if (!apiKey || !from) {
+  if (!apiKey) {
     return { status: 503, body: { ok: false, error: 'The contact form is not configured yet.' } };
   }
 

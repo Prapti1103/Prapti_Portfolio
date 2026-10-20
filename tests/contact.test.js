@@ -28,6 +28,16 @@ test('valid submission is sent with correct payload', async () => {
   assert.equal(sent.subject, 'New Portfolio Enquiry — React role');
   assert.equal(sent.auth, 'Bearer re_test');
 });
+test('Resend test sender works with only an API key configured', async () => {
+  let sent;
+  const r = await call(good, {
+    env: { RESEND_API_KEY: 're_test' },
+    fetchImpl: async (_url, opts) => { sent = JSON.parse(opts.body); return { ok: true }; },
+  });
+  assert.equal(r.status, 200);
+  assert.deepEqual(sent.to, ['praptimangade@gmail.com']);
+  assert.equal(sent.from, 'Prapti Mangade <onboarding@resend.dev>');
+});
 test('missing fields → 422 with field errors', async () => {
   const r = await call({ name: 'A', email: 'nope', subject: '', message: 'short' });
   assert.equal(r.status, 422);

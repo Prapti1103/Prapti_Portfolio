@@ -18,7 +18,7 @@ A premium, animated personal portfolio built with **React 18 + Vite**, **Framer 
 npm install
 npm run dev          # http://localhost:5173
 npm run build        # production build → dist/
-npm test             # 15 tests for the contact API
+npm test             # contact API tests
 ```
 
 During `npm run dev`, `/api/contact` is served by the same handler used in production. To try the success flow without an email account, create `.env` with `CONTACT_DEV_MOCK=1`.
@@ -38,22 +38,21 @@ Everything lives in `src/data/`:
 
 **Résumé:** update `resume` and `resumeDownload` in `profile.js` when your Google Drive résumé changes. Set Drive sharing to **Anyone with the link — Viewer** so visitors can open and download it.
 
-## Contact form — set up email (Resend)
+## Contact form — receive email (Resend)
 
-1. Create a free account at <https://resend.com>.
-2. **Domains → Add domain** and add the DNS records it shows. (A domain you own, such as a cheap `.in`/`.dev`, is needed to send to any inbox. Without one you can test using `onboarding@resend.dev`, which only delivers to the email address your Resend account uses.)
-3. **API Keys → Create API key** (sending access only).
-4. Add these **environment variables** on your host (never in React code, never with a `VITE_` prefix):
+The Node.js handler at `/api/contact` is already deployed as a Netlify Function. The live form's “not configured” error means the Resend API key has not been added to that site's function environment yet.
+
+1. Sign in to <https://resend.com> using `praptimangade@gmail.com` and create an API key under **API Keys**.
+2. In Netlify, open the `praptimangade.netlify.app` site's **Site configuration → Environment variables → Add a variable**. Add `RESEND_API_KEY` with the API key as its secret value. Do not add the key to React code, `.env.example`, GitHub, or this chat.
+3. Save the variable and **trigger a new deploy** so the serverless function receives it. Environment changes do not apply to already-deployed functions.
+4. Submit a test message with a real reply-to address and at least 20 characters in the message; check the inbox and spam folder for `praptimangade@gmail.com`.
+
+The default sender is Resend's `onboarding@resend.dev`, which lets you test without owning a domain. Resend restricts that test sender to delivering to the email address registered to your Resend account, so create the account with `praptimangade@gmail.com`. If your Resend account uses a different address, or you want a branded sender, verify a domain in Resend and add these optional Netlify variables:
 
 | Variable | Example |
 |---|---|
-| `RESEND_API_KEY` | `re_123...` |
 | `CONTACT_TO_EMAIL` | `praptimangade@gmail.com` |
-| `CONTACT_FROM_EMAIL` | `Portfolio <hello@yourdomain.com>` |
-
-5. Redeploy, send a test message from the live site and check your inbox (and spam folder the first time).
-
-Until those variables are set, the form shows an error with a direct email link. It never shows a false "sent" message.
+| `CONTACT_FROM_EMAIL` | `Prapti Mangade <hello@yourdomain.com>` |
 
 **Built-in protection:** server-side validation, email format and length limits, a hidden honeypot field, a too-fast-submit check, a per-IP rate limit (5 per 10 minutes), header-injection stripping, HTML-escaped email body, the visitor's address set as **Reply-To** (not From), no storage of messages, and no message content or keys in logs.
 
@@ -61,7 +60,7 @@ Until those variables are set, the form shows an error with a direct email link.
 
 1. Push the portfolio project to its own GitHub repository and import it at <https://app.netlify.com> → **Add new site → Import from Git**. Keep the repository scoped to this project; do not publish your Windows home folder.
 2. Netlify reads `netlify.toml` for the `npm run build` command, `dist` publish directory, Node 20 runtime and `/api/contact` function. If the project is nested in the repository, set the site's base directory to the folder containing `package.json` and `netlify.toml`.
-3. In **Site configuration → Environment variables**, add `RESEND_API_KEY`, `CONTACT_TO_EMAIL` and `CONTACT_FROM_EMAIL` as described above, then trigger a deploy.
+3. In **Site configuration → Environment variables**, add `RESEND_API_KEY`. Add `CONTACT_TO_EMAIL` or `CONTACT_FROM_EMAIL` only if you need to override the defaults above, then trigger a deploy.
 4. After Netlify assigns your site URL, update `siteUrl` in `src/data/profile.js` and the `og:image` URL in `index.html` if you want social link previews to use your live domain.
 
 ## Project structure
