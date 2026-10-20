@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Prapti Mangade — Full-Stack, React &amp; .NET Developer</title>
+    <meta name="description" content="Portfolio of Prapti Mangade, a full-stack developer building responsive React interfaces and APIs with ASP.NET Core, Java and SQL Server. Projects include Court AI and the Shri Shahu Prabodhini exam platform." />
+    <meta name="author" content="Prapti Mangade" />
+    <meta name="theme-color" content="#0b0709" />
+    <link rel="icon" href="/profile.png" type="image/png" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Prapti Mangade — Full-Stack, React & .NET Developer" />
+    <meta property="og:description" content="Responsive web experiences and practical software across React, APIs and databases." />
+    <meta property="og:image" content="/og-image.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+    <script>
+      // Apply saved/system theme before paint to avoid a flash.
+      (function () {
+        try {
+          var t = localStorage.getItem('pm-theme');
+          if (!t) t = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+          document.documentElement.setAttribute('data-theme', t);
+        } catch (e) {}
+      })();
+    </script>
+    <script type="application/ld+json">
+      {"@context":"https://schema.org","@type":"Person","name":"Prapti Mangade","jobTitle":"Full-Stack Software Developer","email":"mailto:praptimangade@gmail.com","sameAs":["https://github.com/Prapti1103","https://www.linkedin.com/in/prapti-mangade1103/"]}
+    </script>
+  </head>
+  <body>
+    <noscript>Please enable JavaScript to view this portfolio.</noscript>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
